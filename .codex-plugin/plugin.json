@@ -1,0 +1,23 @@
+{
+  "name": "frontend-slides-pptx",
+  "version": "0.2.0",
+  "description": "Create polished HTML slides and export supported elements to editable PowerPoint.",
+  "author": {
+    "name": "troywjz",
+    "url": "https://github.com/troywjz"
+  },
+  "homepage": "https://github.com/troywjz/frontend-slides-pptx",
+  "repository": "https://github.com/troywjz/frontend-slides-pptx",
+  "license": "MIT",
+  "keywords": ["presentations", "html", "powerpoint", "pptx", "editable"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Frontend Slides PPTX",
+    "shortDescription": "Design slides in HTML and export supported elements to editable PPTX",
+    "longDescription": "Keeps frontend-style slide design while adding a measured DOM schema, native PPTX export, and PPTX-to-HTML recovery for supported elements.",
+    "developerName": "troywjz",
+    "category": "Productivity",
+    "capabilities": ["Create", "Edit", "Export"],
+    "defaultPrompt": "Create or revise a fixed-stage HTML presentation, then export its supported elements to an editable PowerPoint and preserve stable IDs for future round trips."
+  }
+}

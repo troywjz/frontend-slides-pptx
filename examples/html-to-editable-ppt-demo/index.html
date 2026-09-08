@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Editable PPTX bridge demo</title>
+  <style>
+    :root { font-family: "Aptos", "Arial", sans-serif; }
+    html, body { margin: 0; background: #111827; }
+    .slide { position: relative; width: 1920px; height: 1080px; overflow: hidden; background: #07111D; color: #F5F8FC; }
+    .content { position: relative; width: 1920px; height: 1080px; padding: 72px; box-sizing: border-box; }
+    [data-pptx-element] { position: absolute; }
+    .kicker { font-size: 22px; font-weight: 700; color: #20B8E8; }
+    .title { font-size: 66px; line-height: 1.08; font-weight: 700; width: 1100px; top: 145px; left: 72px; }
+    .body { font-size: 28px; line-height: 1.45; color: #A8B4C2; width: 760px; top: 410px; left: 72px; }
+    .card { background: #102D43; border: 2px solid #1D5571; border-radius: 22px; width: 500px; height: 250px; }
+    .card-title { font-size: 30px; font-weight: 700; color: #FFB43B; }
+    .card-copy { font-size: 23px; line-height: 1.35; color: #C7D0DA; width: 420px; }
+    .icon { width: 112px; height: 112px; left: 1320px; top: 170px; }
+    .demo-table { position: absolute; left: 1320px; top: 380px; width: 500px; height: 220px; border-collapse: collapse; color: #C7D0DA; font-size: 22px; }
+    .demo-table td { border: 1px solid #1D5571; padding: 14px; }
+  </style>
+</head>
+<body>
+  <main class="slide" data-slide data-slide-id="slide-01">
+    <div class="content">
+      <div class="kicker" data-pptx-element data-pptx-id="slide-01-kicker" data-pptx-type="text" style="left:72px;top:72px;width:420px;height:32px;">HTML TO EDITABLE PPTX</div>
+      <h1 class="title" data-pptx-element data-pptx-id="slide-01-title" data-pptx-role="title" data-pptx-type="text">Design in HTML. Deliver an editable PowerPoint.</h1>
+      <p class="body" data-pptx-element data-pptx-id="slide-01-body" data-pptx-type="text">The browser is the design surface. A measured element model routes supported text, shapes, images, and icons into native PowerPoint objects.</p>
+      <div class="card" data-pptx-element data-pptx-id="slide-01-card" data-pptx-type="card" style="left:72px;top:760px;">
+        <div class="card-title" data-pptx-element data-pptx-id="slide-01-card-title" data-pptx-type="text" style="left:36px;top:36px;width:420px;height:38px;">Stable element IDs</div>
+        <div class="card-copy" data-pptx-element data-pptx-id="slide-01-card-copy" data-pptx-type="text" style="left:36px;top:100px;">The same identifier survives HTML editing, PPTX export, and supported PPTX import.</div>
+      </div>
+      <svg class="icon" data-pptx-element data-pptx-id="slide-01-icon" data-pptx-type="svg" viewBox="0 0 100 100" fill="none" aria-label="editable bridge icon">
+        <rect x="8" y="8" width="84" height="84" rx="18" stroke="#20B8E8" stroke-width="5"/>
+        <path d="M25 50h50M50 25v50" stroke="#FFB43B" stroke-width="5" stroke-linecap="round"/>
+      </svg>
+      <table class="demo-table" data-pptx-element data-pptx-id="slide-01-table" data-pptx-type="table">
+        <tr><td>HTML</td><td>Design surface</td></tr>
+        <tr><td>JSON</td><td>Stable contract</td></tr>
+        <tr><td>PPTX</td><td>Native objects</td></tr>
+      </table>
+    </div>
+    <template class="speaker-notes">This is a generic round-trip demo, not a customer project.</template>
+  </main>
+</body>
+</html>
