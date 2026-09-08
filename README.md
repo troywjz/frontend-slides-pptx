@@ -1,5 +1,27 @@
 # Frontend Slides
 
+This fork keeps the original HTML-first presentation workflow and adds an
+optional measured-DOM bridge to native, editable PowerPoint objects. See
+[`docs/HTML_TO_EDITABLE_PPTX.md`](docs/HTML_TO_EDITABLE_PPTX.md) for the
+conversion contract and [`docs/ARCHITECTURE_COMPARISON.md`](docs/ARCHITECTURE_COMPARISON.md)
+for the design decision.
+
+## Editable PPTX bridge
+
+```bash
+cd packages/html-to-editable-pptx
+npm install
+pip install -r ../../requirements-html-to-editable-pptx.txt
+
+node ../../scripts/dom_to_schema.mjs ../../examples/html-to-editable-ppt-demo/index.html build/deck-schema.json
+node ../../scripts/schema_to_pptx.mjs build/deck-schema.json build/deck.pptx
+python ../../scripts/pptx_to_html.py build/deck.pptx build/imported-html
+```
+
+The bridge preserves stable element IDs in PPTX metadata, so supported manual
+PPTX edits can be recovered into HTML. Unsupported CSS effects remain subject
+to the existing screenshot fallback.
+
 A coding-agent skill for creating stunning HTML presentations — from scratch or by converting PowerPoint files. It is packaged as a Claude Code plugin, and the core `SKILL.md` can also be read by other coding agents with filesystem and shell access.
 
 ## 📺 Watch the Walkthrough & Tutorial
