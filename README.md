@@ -22,6 +22,10 @@ The bridge preserves stable element IDs in PPTX metadata, so supported manual
 PPTX edits can be recovered into HTML. Unsupported CSS effects remain subject
 to the existing screenshot fallback.
 
+After export, run `npm run inspect -- build/deck.pptx` and
+`npm run qa -- build/deck.pptx` from `packages/html-to-editable-pptx`.
+Structural QA does not replace rendering and visual inspection of every slide.
+
 A coding-agent skill for creating stunning HTML presentations — from scratch or by converting PowerPoint files. It is packaged as a Claude Code plugin, and the core `SKILL.md` can also be read by other coding agents with filesystem and shell access.
 
 ## 📺 Watch the Walkthrough & Tutorial

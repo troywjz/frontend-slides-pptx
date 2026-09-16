@@ -18,6 +18,11 @@ shapes, lines, and tables remain editable.
 5. Render and inspect the PPTX before delivery.
 6. When a human edits the PPTX, run `scripts/pptx_to_html.py` to recover supported objects into a new HTML canvas. Review the import report before asking an agent to continue editing.
 
+The HTML remains the only design source; the DOM JSON is only a machine
+interchange layer. Do not introduce a brief planner or a JSON-first PPTX
+builder. Keep audience, conclusion, current-vs-target capability, estimates,
+and physical acceptance claims evidence-bounded.
+
 ## Stability rules
 
 - Do not regenerate unrelated slides when changing one slide.
@@ -34,7 +39,15 @@ node scripts/dom_to_schema.mjs <deck.html> <deck-schema.json>
 node scripts/schema_to_pptx.mjs <deck-schema.json> <deck.pptx>
 python scripts/pptx_to_html.py <edited.pptx> <html-output-dir>
 node scripts/roundtrip_check.mjs <deck.html> <work-dir>
+node scripts/pptx_qa.mjs inspect <deck.pptx>
+node scripts/pptx_qa.mjs qa <deck.pptx>
 ```
+
+`inspect` reports slide count and text summaries. `qa` fails on no slides,
+empty placeholders, duplicate `data-pptx-id` values across the deck, duplicate
+`objectName` values on the same slide, and reliably parsed out-of-bounds
+objects. Unreliable XML checks are warnings. Structural QA does not replace
+rendering and visual inspection of every slide.
 
 Use the original Frontend Slides Skill for visual style discovery and HTML
 authoring. Use this Skill for the native-PPTX and round-trip stages.

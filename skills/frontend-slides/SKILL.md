@@ -21,3 +21,9 @@ When the user needs an editable PowerPoint, continue with the companion
    IDs.
 
 Do not claim that arbitrary CSS effects or screenshots are fully editable.
+
+Keep the audience and main conclusion explicit. Label current capability,
+target capability, estimates, simulations, and physical acceptance separately;
+tests and renders are evidence, not flight or production proof. For PPTX
+delivery, run structural QA and render every slide for visual checks of
+clipping, overlap, crop quality, and readability.

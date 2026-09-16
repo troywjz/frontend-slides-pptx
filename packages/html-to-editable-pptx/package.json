@@ -6,10 +6,13 @@
   "scripts": {
     "dom-to-schema": "node ../../scripts/dom_to_schema.mjs",
     "schema-to-pptx": "node ../../scripts/schema_to_pptx.mjs",
-    "roundtrip": "node ../../scripts/roundtrip_check.mjs"
+    "roundtrip": "node ../../scripts/roundtrip_check.mjs",
+    "inspect": "node ../../scripts/pptx_qa.mjs inspect",
+    "qa": "node ../../scripts/pptx_qa.mjs qa"
   },
   "dependencies": {
     "playwright": "^1.63.0",
-    "pptxgenjs": "^4.0.1"
+    "pptxgenjs": "^4.0.1",
+    "jszip": "^3.10.1"
   }
 }
