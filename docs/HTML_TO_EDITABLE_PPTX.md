@@ -72,6 +72,19 @@ Run the complete smoke round trip:
 node scripts/roundtrip_check.mjs decks/example/index.html build/roundtrip
 ```
 
+Inspect and structurally QA a generated deck:
+
+```bash
+node scripts/pptx_qa.mjs inspect build/roundtrip/deck.pptx
+node scripts/pptx_qa.mjs qa build/roundtrip/deck.pptx
+```
+
+The report includes slide count, per-slide text summaries, empty placeholders,
+missing slides, duplicate `data-pptx-id` across the deck, duplicate
+`objectName` values on the same slide, and reliably parsed
+out-of-bounds objects. Checks that cannot be parsed with confidence are emitted
+as warnings. Rendered slide images still require visual review.
+
 ## Fidelity boundary
 
 Text, images, simple shapes, lines, tables, stable IDs, and basic styling are
