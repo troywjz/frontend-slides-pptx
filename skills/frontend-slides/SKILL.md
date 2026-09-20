@@ -19,6 +19,7 @@ When the user needs an editable PowerPoint, continue with the companion
 4. Render and inspect the PPTX.
 5. After manual PPTX edits, import it back to HTML and continue from recovered
    IDs.
+6. Before export or delivery, run `node scripts/html_content_qa.mjs <deck.html> --strict` to catch broken rendered wraps and incomplete quantitative reasoning chains.
 
 Do not claim that arbitrary CSS effects or screenshots are fully editable.
 

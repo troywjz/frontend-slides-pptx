@@ -8,7 +8,8 @@
     "schema-to-pptx": "node ../../scripts/schema_to_pptx.mjs",
     "roundtrip": "node ../../scripts/roundtrip_check.mjs",
     "inspect": "node ../../scripts/pptx_qa.mjs inspect",
-    "qa": "node ../../scripts/pptx_qa.mjs qa"
+    "qa": "node ../../scripts/pptx_qa.mjs qa",
+    "content-qa": "node ../../scripts/html_content_qa.mjs"
   },
   "dependencies": {
     "playwright": "^1.63.0",

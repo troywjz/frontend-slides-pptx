@@ -80,7 +80,8 @@ When enhancing existing presentations, fixed-stage fitting is the biggest risk:
 2. **Adding images:** Fit them inside the 1920×1080 slide canvas. If slide already has max content, split into two slides
 3. **Adding text:** Max 4-6 bullets per slide. Exceeds limits? Split into continuation slides
 4. **After ANY modification, verify:** the slide stage remains 16:9, no text overflows its card, no panels overlap, and screenshots look correct at 1280×720 plus one phone viewport
-5. **Proactively reorganize:** If modifications will cause overflow, automatically split content and inform the user. Don't wait to be asked
+5. **Before export or delivery, run content logic QA:** `node scripts/html_content_qa.mjs <deck.html> --strict`. Check line-start punctuation, suspicious terminal fragments, and any opt-in quantitative chains; see `docs/CONTENT_LOGIC_QA.md`.
+6. **Proactively reorganize:** If modifications will cause overflow, automatically split content and inform the user. Don't wait to be asked
 
 **When adding images to existing slides:** Move image to a new slide or reduce other content first. Never add images without checking if existing content already fills the 1920×1080 slide stage.
 

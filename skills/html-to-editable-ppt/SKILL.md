@@ -17,6 +17,7 @@ shapes, lines, and tables remain editable.
 4. Run `scripts/schema_to_pptx.mjs` to create native PPTX text boxes, images, shapes, lines, SVG assets, and notes.
 5. Render and inspect the PPTX before delivery.
 6. When a human edits the PPTX, run `scripts/pptx_to_html.py` to recover supported objects into a new HTML canvas. Review the import report before asking an agent to continue editing.
+7. Before export or delivery, run `node scripts/html_content_qa.mjs <deck.html> --strict`; use `docs/CONTENT_LOGIC_QA.md` for the rendered-wrap and quantitative-chain checklist.
 
 The HTML remains the only design source; the DOM JSON is only a machine
 interchange layer. Do not introduce a brief planner or a JSON-first PPTX
