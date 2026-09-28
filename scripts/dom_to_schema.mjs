@@ -32,7 +32,17 @@ const measured = await page.evaluate(() => {
     return `#${hex}`;
   };
   const number = (value, fallback = 0) => Number.parseFloat(value) || fallback;
-  const textContent = (node) => (node.textContent || '').replace(/\s+/g, ' ').trim();
+  const textContent = (node) => {
+    const text = node.textContent || '';
+    if (node.dataset.pptxPreserveBreaks === 'true') {
+      return text.replace(/\r\n?/g, '\n')
+        .split('\n')
+        .map((line) => line.replace(/[\t\f\v ]+/g, ' ').trim())
+        .join('\n')
+        .trim();
+    }
+    return text.replace(/\s+/g, ' ').trim();
+  };
   const toElement = (node, stage, slideIndex, elementIndex) => {
     const rect = node.getBoundingClientRect();
     if (rect.width <= 0 || rect.height <= 0) return null;

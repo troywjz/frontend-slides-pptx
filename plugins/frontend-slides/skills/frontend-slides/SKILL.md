@@ -83,6 +83,10 @@ When enhancing existing presentations, fixed-stage fitting is the biggest risk:
 5. **Before export or delivery, run content logic QA:** `node scripts/html_content_qa.mjs <deck.html> --strict`. Check line-start punctuation, suspicious terminal fragments, and any opt-in quantitative chains; see `docs/CONTENT_LOGIC_QA.md`.
 6. **Proactively reorganize:** If modifications will cause overflow, automatically split content and inform the user. Don't wait to be asked
 
+For editable PPTX text, preserve authored font sizes with `fit: 'none'` and
+`lineSpacingMultiple` of `1.0` or `1.5`. Avoid `fit: 'shrink'`; PowerPoint may
+rescale text again after a person edits text or changes the box size.
+
 **When adding images to existing slides:** Move image to a new slide or reduce other content first. Never add images without checking if existing content already fills the 1920×1080 slide stage.
 
 ---

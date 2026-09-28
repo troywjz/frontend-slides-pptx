@@ -49,6 +49,12 @@ for (const name of names) {
     const objectName = cNvPr ? decodeXml(attr(cNvPr, 'name') || '') : '';
     const description = cNvPr ? decodeXml(attr(cNvPr, 'descr') || '') : '';
     const id = description.match(/(?:^|;)data-pptx-id:([^;]+)/)?.[1] || '';
+    if (/<p:txBody\b/.test(object) && /<a:normAutofit\b/.test(object)) {
+      issues.push(`${name}: text object "${objectName || id || 'unnamed'}" uses shrink-to-fit, which can change its font after manual edits.`);
+    }
+    if (/<p:txBody\b/.test(object) && /<a:lnSpc>\s*<a:spcPts\b/.test(object)) {
+      issues.push(`${name}: text object "${objectName || id || 'unnamed'}" uses fixed-point line spacing; use a multiple instead.`);
+    }
     if (id) ids.set(id, [...(ids.get(id) || []), name]);
     if (objectName) slideObjectNames.set(objectName, (slideObjectNames.get(objectName) || 0) + 1);
     const xfrm = object.match(/<a:xfrm\b[\s\S]*?<a:off\b[^>]*\bx="(-?\d+)"[^>]*\by="(-?\d+)"[^>]*\/>[\s\S]*?<a:ext\b[^>]*\bcx="(\d+)"[^>]*\bcy="(\d+)"[^>]*\/>/);

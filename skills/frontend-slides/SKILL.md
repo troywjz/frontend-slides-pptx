@@ -21,6 +21,10 @@ When the user needs an editable PowerPoint, continue with the companion
    IDs.
 6. Before export or delivery, run `node scripts/html_content_qa.mjs <deck.html> --strict` to catch broken rendered wraps and incomplete quantitative reasoning chains.
 
+Keep exported text at its authored size (`fit: 'none'`) and use normal or 1.5x
+paragraph line spacing. PowerPoint's shrink-to-fit can silently reduce text
+after a user edits a shape.
+
 Do not claim that arbitrary CSS effects or screenshots are fully editable.
 
 Keep the audience and main conclusion explicit. Label current capability,
