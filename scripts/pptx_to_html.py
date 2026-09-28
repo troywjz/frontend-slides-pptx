@@ -16,6 +16,7 @@ from pathlib import Path
 
 from pptx import Presentation
 from pptx.enum.shapes import MSO_SHAPE_TYPE
+from pptx.enum.text import MSO_AUTO_SIZE
 
 
 def rgb(value, fallback="#FFFFFF"):
@@ -91,15 +92,22 @@ def text_element(shape, slide_width, slide_height, element_id):
     bold = False
     italic = False
     color = "#111827"
+    line_height = None
     try:
         p = shape.text_frame.paragraphs[0]
         if p.runs:
             run = p.runs[0]
-            font_size = round((run.font.size.pt if run.font.size else 18) * 1.333, 2)
+            font_size_pt = run.font.size.pt if run.font.size else 18
+            font_size = round(font_size_pt * 1.333, 2)
             font_name = run.font.name or font_name
             bold = bool(run.font.bold)
             italic = bool(run.font.italic)
             color = rgb(run.font.color.rgb, color)
+        spacing = p.line_spacing
+        if isinstance(spacing, float):
+            line_height = round(font_size * spacing, 2)
+        elif spacing is not None and hasattr(spacing, "pt"):
+            line_height = round(spacing.pt * 1.333, 2)
     except Exception:
         pass
     style = (
@@ -107,8 +115,9 @@ def text_element(shape, slide_width, slide_height, element_id):
         f"font-family:{html.escape(font_name)};font-size:{font_size}px;"
         f"color:{color};font-weight:{'700' if bold else '400'};"
         f"font-style:{'italic' if italic else 'normal'};white-space:pre-wrap;"
+        + (f"line-height:{line_height}px;" if line_height is not None else "")
     )
-    return f'<div data-pptx-element data-pptx-type="text" data-pptx-id="{html.escape(element_id)}" style="{style}">{html.escape(text)}</div>'
+    return f'<div data-pptx-element data-pptx-type="text" data-pptx-id="{html.escape(element_id)}" data-pptx-preserve-breaks="true" style="{style}">{html.escape(text)}</div>'
 
 
 def shape_element(shape, slide_width, slide_height, element_id):
@@ -129,16 +138,26 @@ def table_element(shape, slide_width, slide_height, element_id):
     return f'<table data-pptx-element data-pptx-type="table" data-pptx-id="{html.escape(element_id)}" style="{style}">{"".join(rows)}</table>'
 
 
-def extract_shape(shape, slide_width, slide_height, assets_dir, slide_index, element_index, warnings):
+def extract_shape(shape, slide_width, slide_height, assets_dir, slide_index, element_index, warnings, group_path=()):
     metadata = shape_metadata(shape)
-    element_id = safe_name(
-        metadata.get("data-pptx-id") or shape.name,
-        f"slide-{slide_index:02d}-element-{element_index:02d}",
-    )
+    fallback_id = f"slide-{slide_index:02d}-element-{element_index:02d}"
+    if group_path:
+        fallback_id += "-group-" + "-".join(str(index) for index in group_path)
+    raw_name = shape.name or ""
+    if not metadata.get("data-pptx-id") and re.match(r"^(Text|Shape|Image) \d+$", raw_name):
+        raw_name = fallback_id
+    element_id = safe_name(metadata.get("data-pptx-id") or raw_name, fallback_id)
     role = metadata.get("data-pptx-role")
     if getattr(shape, "has_table", False):
         return table_element(shape, slide_width, slide_height, element_id)
     if shape.has_text_frame and shape.text.strip():
+        try:
+            if shape.text_frame.auto_size == MSO_AUTO_SIZE.TEXT_TO_FIT_SHAPE:
+                warning = f"slide {slide_index}: shrink-to-fit text captured at its current font size; dynamic resizing is not represented in HTML"
+                if warning not in warnings:
+                    warnings.append(warning)
+        except Exception:
+            pass
         element = text_element(shape, slide_width, slide_height, element_id)
         return element.replace(">", f' data-pptx-role="{html.escape(role)}">', 1) if role and element else element
     if shape.shape_type == MSO_SHAPE_TYPE.PICTURE:
@@ -149,7 +168,10 @@ def extract_shape(shape, slide_width, slide_height, assets_dir, slide_index, ele
         role_attr = f' data-pptx-role="{html.escape(role)}"' if role else ""
         return f'<img data-pptx-element data-pptx-type="image" data-pptx-id="{html.escape(element_id)}"{role_attr} src="assets/{filename}" style="{style}" alt="{html.escape(element_id)}">'
     if shape.shape_type == MSO_SHAPE_TYPE.GROUP:
-        return "".join(extract_shape(child, slide_width, slide_height, assets_dir, slide_index, element_index, warnings) for child in shape.shapes)
+        return "".join(
+            extract_shape(child, slide_width, slide_height, assets_dir, slide_index, element_index, warnings, (*group_path, child_index))
+            for child_index, child in enumerate(shape.shapes, start=1)
+        )
     if shape.shape_type in {MSO_SHAPE_TYPE.AUTO_SHAPE, MSO_SHAPE_TYPE.FREEFORM, MSO_SHAPE_TYPE.LINE}:
         return shape_element(shape, slide_width, slide_height, element_id)
     warnings.append(f"slide {slide_index}: unsupported shape {shape.shape_type} ({shape.name})")

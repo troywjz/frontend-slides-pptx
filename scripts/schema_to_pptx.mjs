@@ -56,7 +56,11 @@ function setElementName(object, element) {
 
 function addText(slide, element) {
   const p = pos(element);
+  const fontSizePx = Number(element.fs || 16);
   const lineSpacingPx = Number.parseFloat(element.lineHeight);
+  const lineSpacingMultiple = Number.isFinite(lineSpacingPx) && fontSizePx > 0 && lineSpacingPx / fontSizePx >= 1.4
+    ? 1.5
+    : 1.0;
   const text = slide.addText(element.text || '', {
     ...p,
     margin: 0,
@@ -64,15 +68,15 @@ function addText(slide, element) {
     // PowerPoint's text metrics run slightly taller than browser CSS pixels;
     // the small conversion factor keeps measured multi-line boxes from
     // overflowing while preserving the visual hierarchy.
-    fontSize: Math.max(1, Number(element.fs || 16) * 0.72),
+    fontSize: Math.max(1, fontSizePx * 0.72),
     color: hex(element.color, '111827'),
     bold: Boolean(element.bold),
     italic: Boolean(element.italic),
     align: element.align || 'left',
     valign: element.valign || 'top',
-    fit: 'shrink',
+    fit: 'none',
     breakLine: false,
-    ...(Number.isFinite(lineSpacingPx) ? { lineSpacing: lineSpacingPx * 0.75 } : {}),
+    lineSpacingMultiple,
     paraSpaceAfterPt: 0,
     objectName: element.id,
     altText: metadata(element),

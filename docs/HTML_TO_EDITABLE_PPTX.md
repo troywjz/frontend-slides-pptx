@@ -95,7 +95,21 @@ SmartArt, embedded media, and unsupported SVG paths may be preserved as images
 or reported as unsupported. The converter must fail with a warning rather than
 silently claim that an unsupported element is editable.
 
+Editable text is exported with its authored font size (`fit: 'none'`) and a
+normal or 1.5x paragraph line-spacing multiple. Avoid shrink-to-fit for regular
+slide text: PowerPoint may recompute the shrink factor after a person edits the
+text or resizes its box. The reverse importer recovers paragraph line spacing
+into CSS `line-height` when the source paragraph specifies it.
+
 The practical contract is: every element marked for export, or automatically
 recognized as a common visible text/media/painted box, is routed through the
 editable subset. Arbitrary CSS is not promised to become native PowerPoint
 objects.
+
+Structural QA rejects text boxes exported with shrink-to-fit or fixed-point
+paragraph spacing. The reverse importer reports when an input deck still has
+shrink-to-fit, because HTML can preserve the visible font size but not PowerPoint's
+dynamic shrink behavior. Imported text carries `data-pptx-preserve-breaks` so
+explicit PowerPoint paragraph breaks survive DOM measurement and the next export.
+`roundtrip_check.mjs` checks stable IDs and verifies that explicit line breaks
+remain in imported HTML after another measurement pass.

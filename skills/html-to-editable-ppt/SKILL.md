@@ -27,6 +27,11 @@ and physical acceptance claims evidence-bounded.
 ## Stability rules
 
 - Do not regenerate unrelated slides when changing one slide.
+- Export regular text with `fit: 'none'`; do not use `fit: 'shrink'`, which can cause PowerPoint to rescale text after a person edits the text or resizes its box.
+- Use `lineSpacingMultiple` of `1.0` or `1.5` rather than fixed point line spacing. When importing PPTX text, recover paragraph line spacing into CSS `line-height` when available.
+- The PPTX importer marks recovered text with `data-pptx-preserve-breaks`; keep this marker so DOM measurement preserves manual paragraph breaks on the next export.
+- Before delivery, run PPTX structural QA; it rejects text boxes with shrink-to-fit or fixed-point paragraph spacing.
+- If text no longer fits after a manual edit, adjust the text box or content explicitly; preserve the chosen font size.
 - Keep shared title, page number, logo, and footer roles in a master/layout layer when possible.
 - Never match elements by position alone. Use `data-pptx-id` in HTML and shape names or alt metadata in PPTX.
 - Do not claim arbitrary CSS is editable. Unsupported effects must become an image fallback or an explicit warning.
